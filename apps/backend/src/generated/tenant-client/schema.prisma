@@ -1,0 +1,204 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/generated/tenant-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------
+// 1. Company Identity & Profile
+// -----------------------------------------------------
+
+model CompanyProfile {
+  id          String @id @default(uuid())
+  companyName String
+  email       String
+  mobile      String // Required: Step 1
+
+  // Address Fields
+  addressLine1 String?
+  addressLine2 String?
+  city         String // "district" from UI
+  state        String
+  country      String
+  postalCode   String
+
+  // Subscription / Tracking
+  plan         String // free | pro | enterprise
+  conversionId String  @unique
+  dsaName      String? // Optional read-only
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Expanded Profile Fields (Audit Fix)
+  legalName         String?
+  displayName       String?
+  websiteUrl        String?
+  companyType       String?
+  incorporationDate String? // Kept as String to match UI for now, logic can parse later or generic
+  supportEmail      String?
+  supportPhone      String?
+  description       String?
+}
+
+//Branch
+
+model Branch {
+  id String @id @default(uuid())
+
+  // Identity
+  name   String
+  email  String?
+  mobile String?
+
+  // Address
+  addressLine1 String?
+  addressLine2 String?
+  country      String
+  state        String
+  district     String
+  postalCode   String
+
+  // Operations
+  workingDays  Json?
+  workingHours Json?
+  stockEnabled Boolean @default(false)
+  approvalFlow Json?
+
+  // Control
+  isHeadOffice Boolean @default(false)
+  isActive     Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//
+
+model ComplianceDetails {
+  id String @id @default(uuid())
+
+  // Legal Identifiers
+  pan      String? // Company PAN
+  gstin    String? // GSTIN
+  gstType  String? // Regular / Composition / etc.
+  gstState String? // State code (auto-filled)
+  cin      String? // CIN / LLPIN
+  tan      String? // TAN
+  msme     String? // MSME / Udyam number
+  lut      String? // Letter of Undertaking
+  sezUnit  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//
+
+model FinancialPeriod {
+  id String @id @default(uuid())
+
+  baseCurrency      String // e.g. INR
+  financialYearFrom DateTime
+  financialYearTo   DateTime
+
+  accountingMethod String // Cash | Accrual
+  decimalPrecision Int
+
+  invoicePrefix  String?
+  invoiceStartNo Int?
+
+  timezone String
+  roundOff Boolean @default(false)
+
+  openingBalanceDate DateTime?
+  openingBalance     Decimal?
+
+  creditNotePrefix String?
+  debitNotePrefix  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// -----------------------------------------------------
+// 2. Users & Auth (Root Admin)
+// -----------------------------------------------------
+
+model User {
+  id String @id @default(uuid())
+
+  // Profile
+  fullName String
+  email    String @unique
+  mobile   String
+
+  // Credentials
+  username     String @unique
+  passwordHash String
+
+  status String // active | suspended
+
+  isFirstLogin Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// -----------------------------------------------------
+// 3. RBAC (Roles & Permissions)
+// -----------------------------------------------------
+
+model Permission {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  label     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Role {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+
+  @@id([roleId, permissionId])
+}
+
+model UserRole {
+  userId String
+  roleId String
+
+  @@id([userId, roleId])
+}
+
+// -----------------------------------------------------
+// 4. System Configuration
+// -----------------------------------------------------
+
+model CompanySettings {
+  id           String  @id @default(uuid())
+  betaMode     Boolean @default(false)
+  settingsJson Json?
+
+  setupCompleted   Boolean   @default(false)
+  setupCompletedAt DateTime?
+  updatedAt        DateTime  @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  action    String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}

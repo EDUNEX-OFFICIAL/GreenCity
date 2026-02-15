@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "location": ["../../shared/location/index.ts"]
     }
   },
   "include": [

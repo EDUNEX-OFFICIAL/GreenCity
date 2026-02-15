@@ -2,7 +2,18 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src"
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "location": ["../../shared/location/index"]
+    }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "infra",
+    "types",
+    "utils",
+    "scripts",
+    "../../shared"
+  ]
 }
