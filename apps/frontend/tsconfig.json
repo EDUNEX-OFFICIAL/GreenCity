@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "location": ["../../shared/location/index.ts"]
+      "@shared/location/*": ["../../packages/shared-location/src/*"]
     }
   },
   "include": [

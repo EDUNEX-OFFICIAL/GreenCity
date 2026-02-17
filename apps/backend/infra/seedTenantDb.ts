@@ -36,7 +36,8 @@ export async function seedTenantDb(dbName: string, input: CreateCompanyInput) {
         // Address
         addressLine1: companyInfo.addressLine1 || null,
         addressLine2: companyInfo.addressLine2 || null,
-        city: companyInfo.district, // Mapping "district" to "city" based on previous logic
+        city: companyInfo.city,
+        district: companyInfo.district,
         state: companyInfo.state,
         country: companyInfo.country,
         postalCode: companyInfo.postalCode,

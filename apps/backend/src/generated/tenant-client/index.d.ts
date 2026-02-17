@@ -1789,6 +1789,7 @@ export namespace Prisma {
     addressLine1: string | null
     addressLine2: string | null
     city: string | null
+    district: string | null
     state: string | null
     country: string | null
     postalCode: string | null
@@ -1815,6 +1816,7 @@ export namespace Prisma {
     addressLine1: string | null
     addressLine2: string | null
     city: string | null
+    district: string | null
     state: string | null
     country: string | null
     postalCode: string | null
@@ -1841,6 +1843,7 @@ export namespace Prisma {
     addressLine1: number
     addressLine2: number
     city: number
+    district: number
     state: number
     country: number
     postalCode: number
@@ -1869,6 +1872,7 @@ export namespace Prisma {
     addressLine1?: true
     addressLine2?: true
     city?: true
+    district?: true
     state?: true
     country?: true
     postalCode?: true
@@ -1895,6 +1899,7 @@ export namespace Prisma {
     addressLine1?: true
     addressLine2?: true
     city?: true
+    district?: true
     state?: true
     country?: true
     postalCode?: true
@@ -1921,6 +1926,7 @@ export namespace Prisma {
     addressLine1?: true
     addressLine2?: true
     city?: true
+    district?: true
     state?: true
     country?: true
     postalCode?: true
@@ -2020,6 +2026,7 @@ export namespace Prisma {
     addressLine1: string | null
     addressLine2: string | null
     city: string
+    district: string | null
     state: string
     country: string
     postalCode: string
@@ -2063,6 +2070,7 @@ export namespace Prisma {
     addressLine1?: boolean
     addressLine2?: boolean
     city?: boolean
+    district?: boolean
     state?: boolean
     country?: boolean
     postalCode?: boolean
@@ -2089,6 +2097,7 @@ export namespace Prisma {
     addressLine1?: boolean
     addressLine2?: boolean
     city?: boolean
+    district?: boolean
     state?: boolean
     country?: boolean
     postalCode?: boolean
@@ -2115,6 +2124,7 @@ export namespace Prisma {
     addressLine1?: boolean
     addressLine2?: boolean
     city?: boolean
+    district?: boolean
     state?: boolean
     country?: boolean
     postalCode?: boolean
@@ -2141,6 +2151,7 @@ export namespace Prisma {
     addressLine1?: boolean
     addressLine2?: boolean
     city?: boolean
+    district?: boolean
     state?: boolean
     country?: boolean
     postalCode?: boolean
@@ -2159,7 +2170,7 @@ export namespace Prisma {
     description?: boolean
   }
 
-  export type CompanyProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyName" | "email" | "mobile" | "addressLine1" | "addressLine2" | "city" | "state" | "country" | "postalCode" | "plan" | "conversionId" | "dsaName" | "createdAt" | "updatedAt" | "legalName" | "displayName" | "websiteUrl" | "companyType" | "incorporationDate" | "supportEmail" | "supportPhone" | "description", ExtArgs["result"]["companyProfile"]>
+  export type CompanyProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyName" | "email" | "mobile" | "addressLine1" | "addressLine2" | "city" | "district" | "state" | "country" | "postalCode" | "plan" | "conversionId" | "dsaName" | "createdAt" | "updatedAt" | "legalName" | "displayName" | "websiteUrl" | "companyType" | "incorporationDate" | "supportEmail" | "supportPhone" | "description", ExtArgs["result"]["companyProfile"]>
 
   export type $CompanyProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "CompanyProfile"
@@ -2172,6 +2183,7 @@ export namespace Prisma {
       addressLine1: string | null
       addressLine2: string | null
       city: string
+      district: string | null
       state: string
       country: string
       postalCode: string
@@ -2618,6 +2630,7 @@ export namespace Prisma {
     readonly addressLine1: FieldRef<"CompanyProfile", 'String'>
     readonly addressLine2: FieldRef<"CompanyProfile", 'String'>
     readonly city: FieldRef<"CompanyProfile", 'String'>
+    readonly district: FieldRef<"CompanyProfile", 'String'>
     readonly state: FieldRef<"CompanyProfile", 'String'>
     readonly country: FieldRef<"CompanyProfile", 'String'>
     readonly postalCode: FieldRef<"CompanyProfile", 'String'>
@@ -3020,6 +3033,7 @@ export namespace Prisma {
     country: string | null
     state: string | null
     district: string | null
+    city: string | null
     postalCode: string | null
     stockEnabled: boolean | null
     isHeadOffice: boolean | null
@@ -3038,6 +3052,7 @@ export namespace Prisma {
     country: string | null
     state: string | null
     district: string | null
+    city: string | null
     postalCode: string | null
     stockEnabled: boolean | null
     isHeadOffice: boolean | null
@@ -3056,6 +3071,7 @@ export namespace Prisma {
     country: number
     state: number
     district: number
+    city: number
     postalCode: number
     workingDays: number
     workingHours: number
@@ -3079,6 +3095,7 @@ export namespace Prisma {
     country?: true
     state?: true
     district?: true
+    city?: true
     postalCode?: true
     stockEnabled?: true
     isHeadOffice?: true
@@ -3097,6 +3114,7 @@ export namespace Prisma {
     country?: true
     state?: true
     district?: true
+    city?: true
     postalCode?: true
     stockEnabled?: true
     isHeadOffice?: true
@@ -3115,6 +3133,7 @@ export namespace Prisma {
     country?: true
     state?: true
     district?: true
+    city?: true
     postalCode?: true
     workingDays?: true
     workingHours?: true
@@ -3209,6 +3228,7 @@ export namespace Prisma {
     country: string
     state: string
     district: string
+    city: string | null
     postalCode: string
     workingDays: JsonValue | null
     workingHours: JsonValue | null
@@ -3247,6 +3267,7 @@ export namespace Prisma {
     country?: boolean
     state?: boolean
     district?: boolean
+    city?: boolean
     postalCode?: boolean
     workingDays?: boolean
     workingHours?: boolean
@@ -3268,6 +3289,7 @@ export namespace Prisma {
     country?: boolean
     state?: boolean
     district?: boolean
+    city?: boolean
     postalCode?: boolean
     workingDays?: boolean
     workingHours?: boolean
@@ -3289,6 +3311,7 @@ export namespace Prisma {
     country?: boolean
     state?: boolean
     district?: boolean
+    city?: boolean
     postalCode?: boolean
     workingDays?: boolean
     workingHours?: boolean
@@ -3310,6 +3333,7 @@ export namespace Prisma {
     country?: boolean
     state?: boolean
     district?: boolean
+    city?: boolean
     postalCode?: boolean
     workingDays?: boolean
     workingHours?: boolean
@@ -3321,7 +3345,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "mobile" | "addressLine1" | "addressLine2" | "country" | "state" | "district" | "postalCode" | "workingDays" | "workingHours" | "stockEnabled" | "approvalFlow" | "isHeadOffice" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["branch"]>
+  export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "mobile" | "addressLine1" | "addressLine2" | "country" | "state" | "district" | "city" | "postalCode" | "workingDays" | "workingHours" | "stockEnabled" | "approvalFlow" | "isHeadOffice" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["branch"]>
 
   export type $BranchPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Branch"
@@ -3336,6 +3360,7 @@ export namespace Prisma {
       country: string
       state: string
       district: string
+      city: string | null
       postalCode: string
       workingDays: Prisma.JsonValue | null
       workingHours: Prisma.JsonValue | null
@@ -3777,6 +3802,7 @@ export namespace Prisma {
     readonly country: FieldRef<"Branch", 'String'>
     readonly state: FieldRef<"Branch", 'String'>
     readonly district: FieldRef<"Branch", 'String'>
+    readonly city: FieldRef<"Branch", 'String'>
     readonly postalCode: FieldRef<"Branch", 'String'>
     readonly workingDays: FieldRef<"Branch", 'Json'>
     readonly workingHours: FieldRef<"Branch", 'Json'>
@@ -13371,6 +13397,7 @@ export namespace Prisma {
     addressLine1: 'addressLine1',
     addressLine2: 'addressLine2',
     city: 'city',
+    district: 'district',
     state: 'state',
     country: 'country',
     postalCode: 'postalCode',
@@ -13402,6 +13429,7 @@ export namespace Prisma {
     country: 'country',
     state: 'state',
     district: 'district',
+    city: 'city',
     postalCode: 'postalCode',
     workingDays: 'workingDays',
     workingHours: 'workingHours',
@@ -13682,6 +13710,7 @@ export namespace Prisma {
     addressLine1?: StringNullableFilter<"CompanyProfile"> | string | null
     addressLine2?: StringNullableFilter<"CompanyProfile"> | string | null
     city?: StringFilter<"CompanyProfile"> | string
+    district?: StringNullableFilter<"CompanyProfile"> | string | null
     state?: StringFilter<"CompanyProfile"> | string
     country?: StringFilter<"CompanyProfile"> | string
     postalCode?: StringFilter<"CompanyProfile"> | string
@@ -13708,6 +13737,7 @@ export namespace Prisma {
     addressLine1?: SortOrderInput | SortOrder
     addressLine2?: SortOrderInput | SortOrder
     city?: SortOrder
+    district?: SortOrderInput | SortOrder
     state?: SortOrder
     country?: SortOrder
     postalCode?: SortOrder
@@ -13738,6 +13768,7 @@ export namespace Prisma {
     addressLine1?: StringNullableFilter<"CompanyProfile"> | string | null
     addressLine2?: StringNullableFilter<"CompanyProfile"> | string | null
     city?: StringFilter<"CompanyProfile"> | string
+    district?: StringNullableFilter<"CompanyProfile"> | string | null
     state?: StringFilter<"CompanyProfile"> | string
     country?: StringFilter<"CompanyProfile"> | string
     postalCode?: StringFilter<"CompanyProfile"> | string
@@ -13763,6 +13794,7 @@ export namespace Prisma {
     addressLine1?: SortOrderInput | SortOrder
     addressLine2?: SortOrderInput | SortOrder
     city?: SortOrder
+    district?: SortOrderInput | SortOrder
     state?: SortOrder
     country?: SortOrder
     postalCode?: SortOrder
@@ -13795,6 +13827,7 @@ export namespace Prisma {
     addressLine1?: StringNullableWithAggregatesFilter<"CompanyProfile"> | string | null
     addressLine2?: StringNullableWithAggregatesFilter<"CompanyProfile"> | string | null
     city?: StringWithAggregatesFilter<"CompanyProfile"> | string
+    district?: StringNullableWithAggregatesFilter<"CompanyProfile"> | string | null
     state?: StringWithAggregatesFilter<"CompanyProfile"> | string
     country?: StringWithAggregatesFilter<"CompanyProfile"> | string
     postalCode?: StringWithAggregatesFilter<"CompanyProfile"> | string
@@ -13826,6 +13859,7 @@ export namespace Prisma {
     country?: StringFilter<"Branch"> | string
     state?: StringFilter<"Branch"> | string
     district?: StringFilter<"Branch"> | string
+    city?: StringNullableFilter<"Branch"> | string | null
     postalCode?: StringFilter<"Branch"> | string
     workingDays?: JsonNullableFilter<"Branch">
     workingHours?: JsonNullableFilter<"Branch">
@@ -13847,6 +13881,7 @@ export namespace Prisma {
     country?: SortOrder
     state?: SortOrder
     district?: SortOrder
+    city?: SortOrderInput | SortOrder
     postalCode?: SortOrder
     workingDays?: SortOrderInput | SortOrder
     workingHours?: SortOrderInput | SortOrder
@@ -13871,6 +13906,7 @@ export namespace Prisma {
     country?: StringFilter<"Branch"> | string
     state?: StringFilter<"Branch"> | string
     district?: StringFilter<"Branch"> | string
+    city?: StringNullableFilter<"Branch"> | string | null
     postalCode?: StringFilter<"Branch"> | string
     workingDays?: JsonNullableFilter<"Branch">
     workingHours?: JsonNullableFilter<"Branch">
@@ -13892,6 +13928,7 @@ export namespace Prisma {
     country?: SortOrder
     state?: SortOrder
     district?: SortOrder
+    city?: SortOrderInput | SortOrder
     postalCode?: SortOrder
     workingDays?: SortOrderInput | SortOrder
     workingHours?: SortOrderInput | SortOrder
@@ -13919,6 +13956,7 @@ export namespace Prisma {
     country?: StringWithAggregatesFilter<"Branch"> | string
     state?: StringWithAggregatesFilter<"Branch"> | string
     district?: StringWithAggregatesFilter<"Branch"> | string
+    city?: StringNullableWithAggregatesFilter<"Branch"> | string | null
     postalCode?: StringWithAggregatesFilter<"Branch"> | string
     workingDays?: JsonNullableWithAggregatesFilter<"Branch">
     workingHours?: JsonNullableWithAggregatesFilter<"Branch">
@@ -14490,6 +14528,7 @@ export namespace Prisma {
     addressLine1?: string | null
     addressLine2?: string | null
     city: string
+    district?: string | null
     state: string
     country: string
     postalCode: string
@@ -14516,6 +14555,7 @@ export namespace Prisma {
     addressLine1?: string | null
     addressLine2?: string | null
     city: string
+    district?: string | null
     state: string
     country: string
     postalCode: string
@@ -14542,6 +14582,7 @@ export namespace Prisma {
     addressLine1?: NullableStringFieldUpdateOperationsInput | string | null
     addressLine2?: NullableStringFieldUpdateOperationsInput | string | null
     city?: StringFieldUpdateOperationsInput | string
+    district?: NullableStringFieldUpdateOperationsInput | string | null
     state?: StringFieldUpdateOperationsInput | string
     country?: StringFieldUpdateOperationsInput | string
     postalCode?: StringFieldUpdateOperationsInput | string
@@ -14568,6 +14609,7 @@ export namespace Prisma {
     addressLine1?: NullableStringFieldUpdateOperationsInput | string | null
     addressLine2?: NullableStringFieldUpdateOperationsInput | string | null
     city?: StringFieldUpdateOperationsInput | string
+    district?: NullableStringFieldUpdateOperationsInput | string | null
     state?: StringFieldUpdateOperationsInput | string
     country?: StringFieldUpdateOperationsInput | string
     postalCode?: StringFieldUpdateOperationsInput | string
@@ -14594,6 +14636,7 @@ export namespace Prisma {
     addressLine1?: string | null
     addressLine2?: string | null
     city: string
+    district?: string | null
     state: string
     country: string
     postalCode: string
@@ -14620,6 +14663,7 @@ export namespace Prisma {
     addressLine1?: NullableStringFieldUpdateOperationsInput | string | null
     addressLine2?: NullableStringFieldUpdateOperationsInput | string | null
     city?: StringFieldUpdateOperationsInput | string
+    district?: NullableStringFieldUpdateOperationsInput | string | null
     state?: StringFieldUpdateOperationsInput | string
     country?: StringFieldUpdateOperationsInput | string
     postalCode?: StringFieldUpdateOperationsInput | string
@@ -14646,6 +14690,7 @@ export namespace Prisma {
     addressLine1?: NullableStringFieldUpdateOperationsInput | string | null
     addressLine2?: NullableStringFieldUpdateOperationsInput | string | null
     city?: StringFieldUpdateOperationsInput | string
+    district?: NullableStringFieldUpdateOperationsInput | string | null
     state?: StringFieldUpdateOperationsInput | string
     country?: StringFieldUpdateOperationsInput | string
     postalCode?: StringFieldUpdateOperationsInput | string
@@ -14674,6 +14719,7 @@ export namespace Prisma {
     country: string
     state: string
     district: string
+    city?: string | null
     postalCode: string
     workingDays?: NullableJsonNullValueInput | InputJsonValue
     workingHours?: NullableJsonNullValueInput | InputJsonValue
@@ -14695,6 +14741,7 @@ export namespace Prisma {
     country: string
     state: string
     district: string
+    city?: string | null
     postalCode: string
     workingDays?: NullableJsonNullValueInput | InputJsonValue
     workingHours?: NullableJsonNullValueInput | InputJsonValue
@@ -14716,6 +14763,7 @@ export namespace Prisma {
     country?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     district?: StringFieldUpdateOperationsInput | string
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     postalCode?: StringFieldUpdateOperationsInput | string
     workingDays?: NullableJsonNullValueInput | InputJsonValue
     workingHours?: NullableJsonNullValueInput | InputJsonValue
@@ -14737,6 +14785,7 @@ export namespace Prisma {
     country?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     district?: StringFieldUpdateOperationsInput | string
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     postalCode?: StringFieldUpdateOperationsInput | string
     workingDays?: NullableJsonNullValueInput | InputJsonValue
     workingHours?: NullableJsonNullValueInput | InputJsonValue
@@ -14758,6 +14807,7 @@ export namespace Prisma {
     country: string
     state: string
     district: string
+    city?: string | null
     postalCode: string
     workingDays?: NullableJsonNullValueInput | InputJsonValue
     workingHours?: NullableJsonNullValueInput | InputJsonValue
@@ -14779,6 +14829,7 @@ export namespace Prisma {
     country?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     district?: StringFieldUpdateOperationsInput | string
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     postalCode?: StringFieldUpdateOperationsInput | string
     workingDays?: NullableJsonNullValueInput | InputJsonValue
     workingHours?: NullableJsonNullValueInput | InputJsonValue
@@ -14800,6 +14851,7 @@ export namespace Prisma {
     country?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     district?: StringFieldUpdateOperationsInput | string
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     postalCode?: StringFieldUpdateOperationsInput | string
     workingDays?: NullableJsonNullValueInput | InputJsonValue
     workingHours?: NullableJsonNullValueInput | InputJsonValue
@@ -15481,6 +15533,7 @@ export namespace Prisma {
     addressLine1?: SortOrder
     addressLine2?: SortOrder
     city?: SortOrder
+    district?: SortOrder
     state?: SortOrder
     country?: SortOrder
     postalCode?: SortOrder
@@ -15507,6 +15560,7 @@ export namespace Prisma {
     addressLine1?: SortOrder
     addressLine2?: SortOrder
     city?: SortOrder
+    district?: SortOrder
     state?: SortOrder
     country?: SortOrder
     postalCode?: SortOrder
@@ -15533,6 +15587,7 @@ export namespace Prisma {
     addressLine1?: SortOrder
     addressLine2?: SortOrder
     city?: SortOrder
+    district?: SortOrder
     state?: SortOrder
     country?: SortOrder
     postalCode?: SortOrder
@@ -15639,6 +15694,7 @@ export namespace Prisma {
     country?: SortOrder
     state?: SortOrder
     district?: SortOrder
+    city?: SortOrder
     postalCode?: SortOrder
     workingDays?: SortOrder
     workingHours?: SortOrder
@@ -15660,6 +15716,7 @@ export namespace Prisma {
     country?: SortOrder
     state?: SortOrder
     district?: SortOrder
+    city?: SortOrder
     postalCode?: SortOrder
     stockEnabled?: SortOrder
     isHeadOffice?: SortOrder
@@ -15678,6 +15735,7 @@ export namespace Prisma {
     country?: SortOrder
     state?: SortOrder
     district?: SortOrder
+    city?: SortOrder
     postalCode?: SortOrder
     stockEnabled?: SortOrder
     isHeadOffice?: SortOrder

@@ -5,7 +5,7 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "location": ["../../shared/location/index"]
+      "@shared/*": ["../../packages/shared-location/src/*"]
     }
   },
   "include": [
@@ -14,6 +14,6 @@
     "types",
     "utils",
     "scripts",
-    "../../shared"
+    "scripts"
   ]
 }

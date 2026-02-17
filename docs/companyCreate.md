@@ -87,16 +87,13 @@ sequenceDiagram
 ### Phase 1: Frontend Input Collection
 1.  **User Action**: User opens the "Add New Company" modal.
 2.  **`CompanyCreateModel.tsx`**:
-    *   Manages a multi-step form state (1. Details, 2. Admin, 3. Subscription).
-    *   Collects data into a nested object:
-        ```typescript
-        {
-          companyInfo: { ... },
-          rootAdmin: { ... },
-          subscription: { ... }
-        }
-        ```
-    *   On submission, calls the `onSubmit` handler which triggers `company.api.ts`.
+    *   **Refactored UI**: Now features a 3-step wizard layout with a clean header, scrollable body, and fixed footer with step indicators.
+    *   **Step 1: Company Info**: Collects Company Name, Email, Mobile, and Address (including Country, State, District, City).
+        *   *Note*: City and District are dynamically loaded based on State selection.
+    *   **Step 2: Root Admin**: Collects Admin Name, Email, Mobile, Username, and Password.
+        *   *New*: Includes "Confirm Password" field with visibility toggles (Eye/EyeOff) and strict matching validation.
+    *   **Step 3: Subscription**: Collects Plan (Free/Pro/Enterprise), Conversion ID, and Beta Mode toggle.
+    *   On submission (Step 3), calls the `onSubmit` handler which triggers `company.api.ts`.
 3.  **`company.api.ts`**:
     *   Sends a JSON `POST` request to `{API_BASE}/api/companies/create`.
     *   Handles network errors and parses the response.

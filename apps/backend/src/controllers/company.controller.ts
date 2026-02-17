@@ -38,6 +38,21 @@ export async function createCompany(req: Request, res: Response) {
       });
     }
 
+    // 2.1 Validate Location (Strict Mode)
+    const { country, state, district, city } = body.companyInfo;
+    try {
+      // Lazy load validator to avoid circular dep issues if any, though explicit import is better
+      const { validateIndianLocation } = require("../validators/location.validator");
+      validateIndianLocation(country, state, district, city || ""); 
+      // City might be optional in type but required by validator? 
+      // strict validator requires city. companyInfo type has city: string.
+    } catch (e: any) {
+      return res.status(400).json({
+        error: "INVALID_LOCATION",
+        message: e.message
+      });
+    }
+
     // 3. Delegate to service
     // Service now accepts strict nested input
     const result = await createCompanyService(body);

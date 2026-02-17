@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight, Info } from "lucide-react";
 import { getOnboardingData, updateLegalInfo } from "@/services/onboarding.api";
-import { getGstCodeByState } from "location";
+import { INDIA_LOCATION } from "@shared/location/india";
 
 // --- VALIDATION HELPERS ---
 const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
@@ -50,9 +50,7 @@ export default function LegalInfoPage() {
           state: company.state || "",
         });
 
-        const derivedGstCode =
-          getGstCodeByState(company.country || "India", company.state || "") ||
-          "";
+        const derivedGstCode = INDIA_LOCATION[company.state || ""]?.code || "";
 
         setFormData((prev) => ({
           ...prev,

@@ -9,7 +9,7 @@ import {
   completeOnboarding,
   updateBranchInfo,
 } from "@/services/onboarding.api";
-import { COUNTRIES, getStatesByCountry, getDistrictsByState } from "location";
+import { INDIA_LOCATION } from "@shared/location/india";
 import VerifyButton from "@/components/onboarding/VerifyButton";
 
 // --- VALIDATION HELPERS ---
@@ -54,30 +54,32 @@ export default function BranchInfoPage() {
         const data = await getOnboardingData();
         if (!isMounted) return;
 
-        const saved = data.settings?.settingsJson?.branchInfo || {};
+        const branchData =
+          data.branches?.[0] || data.settings?.settingsJson?.branchInfo || {};
 
         setFormData((prev) => ({
           ...prev,
-          branchName: saved.branchName || "",
-          branchCode: saved.branchCode || "",
-          addressLine1: saved.addressLine1 || "",
-          addressLine2: saved.addressLine2 || "",
-          city: saved.city || "",
-          state: saved.state || "",
-          pincode: saved.pincode || "",
-          branchHead: saved.branchHead || "",
-          contactNumber: saved.contactNumber || "",
-          branchEmail: saved.branchEmail || "",
-          branchMobile: saved.branchMobile || "",
-          country: saved.country || "India",
-          district: saved.district || "",
-          zipCode: saved.zipCode || "",
-          workingDays: saved.workingDays || "",
-          workingHours: saved.workingHours || "",
-          stockAllowed: saved.stockAllowed || false,
-          negativeStockAllowed: saved.negativeStockAllowed || false,
-          transactionLockDate: saved.transactionLockDate || false,
-          approvalFlow: saved.approvalFlow || false,
+          branchName: branchData.name || branchData.branchName || "",
+          branchCode: branchData.code || branchData.branchCode || "",
+          addressLine1: branchData.addressLine1 || "",
+          addressLine2: branchData.addressLine2 || "",
+          city: branchData.city || "",
+          state: branchData.state || "",
+          pincode: branchData.postalCode || branchData.pincode || "",
+          branchHead: branchData.branchHead || "",
+          contactNumber: branchData.contactNumber || "",
+          branchEmail: branchData.email || branchData.branchEmail || "",
+          branchMobile: branchData.mobile || branchData.branchMobile || "",
+          country: branchData.country || "India",
+          district: branchData.district || "",
+          zipCode: branchData.postalCode || branchData.zipCode || "",
+          workingDays: branchData.workingDays || "",
+          workingHours: branchData.workingHours || "",
+          stockAllowed:
+            branchData.stockEnabled ?? branchData.stockAllowed ?? false,
+          negativeStockAllowed: branchData.negativeStockAllowed ?? false,
+          transactionLockDate: branchData.transactionLockDate ?? false,
+          approvalFlow: branchData.approvalFlow ?? false,
         }));
       } catch (error) {
         console.error("Failed to load data", error);
@@ -99,8 +101,12 @@ export default function BranchInfoPage() {
       if (field === "country") {
         newData.state = "";
         newData.district = "";
+        newData.city = "";
       } else if (field === "state") {
         newData.district = "";
+        newData.city = "";
+      } else if (field === "district") {
+        newData.city = "";
       }
 
       return newData;
@@ -126,6 +132,7 @@ export default function BranchInfoPage() {
       if (!formData.country) throw new Error("Country is required");
       if (!formData.state) throw new Error("State is required");
       if (!formData.district) throw new Error("District is required");
+      if (!formData.city) throw new Error("City is required");
       if (!formData.zipCode) throw new Error("Zip Code is required");
 
       // 2. Save Branch Info
@@ -173,8 +180,17 @@ export default function BranchInfoPage() {
     return <div className="p-10 text-center">Loading...</div>;
   }
 
-  const states = getStatesByCountry(formData.country);
-  const districts = getDistrictsByState(formData.country, formData.state);
+  // const states = getStatesByCountry(formData.country);
+  // const districts = getDistrictsByState(formData.country, formData.state);
+
+  const stateOptions = Object.keys(INDIA_LOCATION);
+  const districtOptions = formData.state
+    ? Object.keys(INDIA_LOCATION[formData.state]?.districts || {})
+    : [];
+  const cityOptions =
+    formData.state && formData.district
+      ? INDIA_LOCATION[formData.state]?.districts[formData.district] || []
+      : [];
 
   return (
     <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
@@ -295,31 +311,44 @@ export default function BranchInfoPage() {
               label="Country"
               value={formData.country}
               onChange={(v) => handleChange("country", v)}
-              options={COUNTRIES.map((c) => c.name)}
+              options={["India"]} // Only India supported
               required
             />
             <SelectField
               label="State / Province"
               value={formData.state}
               onChange={(v) => handleChange("state", v)}
-              options={states.map((s) => s.name)}
+              options={stateOptions}
               required
               disabled={!formData.country}
               placeholder="Select State"
             />
           </div>
 
-          {/* Row 5: District & Zip */}
+          {/* Row 5: District & City */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <SelectField
               label="District"
               value={formData.district}
               onChange={(v) => handleChange("district", v)}
-              options={districts}
+              options={districtOptions}
               required
               disabled={!formData.state}
               placeholder="Select District"
             />
+            <SelectField
+              label="City"
+              value={formData.city}
+              onChange={(v) => handleChange("city", v)}
+              options={cityOptions}
+              required
+              disabled={!formData.district}
+              placeholder="Select City"
+            />
+          </div>
+
+          {/* Row 6: Zip */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InputField
               label="Zip Code / Postal Code"
               value={formData.zipCode}

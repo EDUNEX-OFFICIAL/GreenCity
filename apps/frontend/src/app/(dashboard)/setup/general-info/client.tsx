@@ -12,7 +12,7 @@ import {
   OnboardingData,
 } from "@/services/onboarding.api";
 import VerifyButton from "@/components/onboarding/VerifyButton";
-import { COUNTRIES, getStatesByCountry, getDistrictsByState } from "location";
+import { INDIA_LOCATION } from "@shared/location/india";
 
 // Define Admin State locally since it's not exported from the previous file
 type AdminFormState = {
@@ -43,6 +43,7 @@ export default function GeneralInfoPage() {
     addressLine1: "",
     addressLine2: "",
     city: "",
+    district: "",
     state: "",
     country: "India", // Default
     postalCode: "",
@@ -76,6 +77,7 @@ export default function GeneralInfoPage() {
             addressLine1: data.companyProfile.addressLine1 || "",
             addressLine2: data.companyProfile.addressLine2 || "",
             city: data.companyProfile.city || "",
+            district: data.companyProfile.district || "",
             state: data.companyProfile.state || "",
             country: data.companyProfile.country || "India",
             postalCode: data.companyProfile.postalCode || "",
@@ -117,8 +119,12 @@ export default function GeneralInfoPage() {
       // Hierarchy Reset Logic
       if (field === "country") {
         updated.state = "";
-        updated.city = ""; // City is used as District in this structure
+        updated.district = "";
+        updated.city = "";
       } else if (field === "state") {
+        updated.district = "";
+        updated.city = "";
+      } else if (field === "district") {
         updated.city = "";
       }
 
@@ -146,7 +152,8 @@ export default function GeneralInfoPage() {
 
       if (!companyForm.country) throw new Error("Country is required");
       if (!companyForm.state) throw new Error("State is required");
-      if (!companyForm.city) throw new Error("District is required");
+      if (!companyForm.district) throw new Error("District is required");
+      if (!companyForm.city) throw new Error("City is required");
       if (!companyForm.postalCode) throw new Error("Postal Code is required");
 
       if (!adminForm.fullName) throw new Error("Admin Full Name is required");
@@ -179,11 +186,17 @@ export default function GeneralInfoPage() {
   };
 
   // --- Geographics ---
-  const currentStates = getStatesByCountry(companyForm.country || "");
-  const currentDistricts = getDistrictsByState(
-    companyForm.country || "",
-    companyForm.state || "",
-  );
+  // const currentStates = getStatesByCountry(companyForm.country || "");
+  // const currentDistricts = getDistrictsByState(companyForm.country || "", companyForm.state || "");
+
+  const stateOptions = Object.keys(INDIA_LOCATION);
+  const districtOptions = companyForm.state
+    ? Object.keys(INDIA_LOCATION[companyForm.state]?.districts || {})
+    : [];
+  const cityOptions =
+    companyForm.state && companyForm.district
+      ? INDIA_LOCATION[companyForm.state]?.districts[companyForm.district] || []
+      : [];
 
   if (loading) {
     return (
@@ -307,7 +320,7 @@ export default function GeneralInfoPage() {
                 label="Country"
                 value={companyForm.country || ""}
                 onChange={(v) => handleCompanyChange("country", v)}
-                options={COUNTRIES.map((c) => c.name)}
+                options={["India"]} // Only India supported for now per strict logic
                 required
               />
 
@@ -315,7 +328,7 @@ export default function GeneralInfoPage() {
                 label="State"
                 value={companyForm.state || ""}
                 onChange={(v) => handleCompanyChange("state", v)}
-                options={currentStates.map((s) => s.name)}
+                options={stateOptions}
                 disabled={!companyForm.country}
                 required
                 placeholder={
@@ -325,13 +338,27 @@ export default function GeneralInfoPage() {
 
               <SelectField
                 label="District"
-                value={companyForm.city || ""} // We map 'city' to 'district' in UI for now
-                onChange={(v) => handleCompanyChange("city", v)}
-                options={currentDistricts}
+                value={companyForm.district || ""}
+                onChange={(v) => handleCompanyChange("district", v)}
+                options={districtOptions}
                 disabled={!companyForm.state}
                 required
                 placeholder={
                   !companyForm.state ? "Select State first" : "Select District"
+                }
+              />
+
+              <SelectField
+                label="City"
+                value={companyForm.city || ""}
+                onChange={(v) => handleCompanyChange("city", v)}
+                options={cityOptions}
+                disabled={!companyForm.district}
+                required
+                placeholder={
+                  !companyForm.district
+                    ? "Select District first"
+                    : "Select City"
                 }
               />
 

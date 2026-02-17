@@ -1,5 +1,6 @@
 import { getTenantPrisma } from "../db/tenant";
 import { prismaSuperUser } from "../db/superuser";
+import { validateStepPrerequisite, getOnboardingState } from "../validators/onboardingState.validator";
 
 
 
@@ -68,7 +69,7 @@ export async function getOnboardingData(companyId: string) {
     }
   });
   const settings = await tenantPrisma.companySettings.findFirst();
-  // const branches = await tenantPrisma.branch.findMany(); // TODO: Model Branch does not exist in schema
+  const branches = await tenantPrisma.branch.findMany(); 
 
   // --- TRANSITIONAL READ STRATEGY (Step 3) ---
   // Priority: 1. Structured Columns (CompanyProfile) -> 2. Legacy JSON (settings.additionalInfo)
@@ -104,17 +105,17 @@ export async function getOnboardingData(companyId: string) {
     companyProfile,
     admin,
     settings: augmentedSettings, // Return patched settings
-    branches: [], 
+    branches, 
     onboardingStatus: masterCompany.onboardingStatus,
   }
 
 }
 
 import { 
-  validateLocationHierarchy, 
   validateLegalInfo, 
   validateSetupDates 
 } from "../validators/onboarding.validator";
+import { validateIndianLocation } from "../validators/location.validator";
 
 /**
  * Step 1 — Company basic info
@@ -127,7 +128,8 @@ export async function updateCompanyInfo(companyId: string, data: any) {
   if (!masterCompany) throw new Error("No active company found in Master DB");
   
   // --- BACKEND VALIDATION ---
-  validateLocationHierarchy(data.country, data.state, data.city);
+  // --- BACKEND VALIDATION ---
+  validateIndianLocation(data.country, data.state, data.district, data.city);
 
   if (!process.env.POSTGRES_BASE_URL) throw new Error("POSTGRES_BASE_URL is not defined");
 
@@ -143,6 +145,7 @@ export async function updateCompanyInfo(companyId: string, data: any) {
       addressLine1: data.addressLine1,
       addressLine2: data.addressLine2,
       city: data.city,
+      district: data.district,
       state: data.state,
       country: data.country,
       postalCode: data.postalCode,
@@ -201,6 +204,11 @@ export async function updateSettings(companyId: string, payload: any) {
   const FORBIDDEN_STEP_KEYS = ['branchInfo', 'legalInfo', 'accounting', 'branch', 'legal', 'financial'];
   if (FORBIDDEN_STEP_KEYS.includes(stepKey)) {
     throw new Error(`Invalid stepKey '${stepKey}'. usage of updateSettings for this domain is RESTRICTED.`);
+  }
+
+  // 🟢 PHASE 2 — Enforce Sequential Dependency Model
+  if (stepKey === 'additionalInfo') {
+      await validateStepPrerequisite(tenantPrisma, 'additionalInfo');
   }
 
   // --- SPECIAL HANDLING: Additional Info (Step 4 Fix) ---
@@ -302,7 +310,9 @@ export async function updateSettings(companyId: string, payload: any) {
  */
 export async function updateBranchInfo(companyId: string, data: any) {
   // --- BACKEND VALIDATION ---
-  validateLocationHierarchy(data.country, data.state, data.city || data.district);
+  validateIndianLocation(data.country, data.state, data.district, data.city); 
+
+
 
   const masterCompany = await prismaSuperUser.company.findUnique({ where: { id: companyId } });
   if (!masterCompany) throw new Error("No active company found");
@@ -310,6 +320,9 @@ export async function updateBranchInfo(companyId: string, data: any) {
 
   const dbUrl = `${process.env.POSTGRES_BASE_URL}/${masterCompany.dbName}`;
   const tenantPrisma = getTenantPrisma(dbUrl);
+
+  // 🟢 PHASE 2 — Enforce Sequential Dependency Model
+  await validateStepPrerequisite(tenantPrisma, 'branch');
 
   // Upsert Head Office Branch
   // POLICY: "Setup may create exactly one head office".
@@ -322,12 +335,12 @@ export async function updateBranchInfo(companyId: string, data: any) {
       where: { id: existingBranch.id },
       data: {
         name: data.branchName, // Mapped from UI
-        // code: data.branchCode, // TODO: Add to schema if needed or UI
         email: data.branchEmail,
         mobile: data.branchMobile,
         addressLine1: data.addressLine1,
         addressLine2: data.addressLine2,
-        district: data.city || data.district,
+        district: data.district,
+        city: data.city,
         state: data.state,
         postalCode: data.pincode || data.zipCode,
         country: data.country,
@@ -347,7 +360,8 @@ export async function updateBranchInfo(companyId: string, data: any) {
         mobile: data.branchMobile,
         addressLine1: data.addressLine1,
         addressLine2: data.addressLine2,
-        district: data.city || data.district,
+        district: data.district,
+        city: data.city,
         state: data.state,
         postalCode: data.pincode || data.zipCode,
         country: data.country,
@@ -369,6 +383,9 @@ export async function updateLegalInfo(companyId: string, data: any) {
 
   const dbUrl = `${process.env.POSTGRES_BASE_URL}/${masterCompany.dbName}`;
   const tenantPrisma = getTenantPrisma(dbUrl);
+
+  // 🟢 PHASE 2 — Enforce Sequential Dependency Model
+  await validateStepPrerequisite(tenantPrisma, 'legal');
 
   const profile = await tenantPrisma.companyProfile.findFirst();
   if (!profile) throw new Error("Company Profile not found");
@@ -434,6 +451,9 @@ export async function updateAccountingInfo(companyId: string, data: any) {
 
   const dbUrl = `${process.env.POSTGRES_BASE_URL}/${masterCompany.dbName}`;
   const tenantPrisma = getTenantPrisma(dbUrl);
+
+  // 🟢 PHASE 2 — Enforce Sequential Dependency Model
+  await validateStepPrerequisite(tenantPrisma, 'accounting');
 
   // --- BACKEND VALIDATION ---
   validateSetupDates({
@@ -516,23 +536,15 @@ export async function getSetupStatus(companyId: string) {
   const dbUrl = `${process.env.POSTGRES_BASE_URL}/${masterCompany.dbName}`;
   const tenantPrisma = getTenantPrisma(dbUrl);
 
-  // Check Existence
-  const compliance = await tenantPrisma.complianceDetails.findFirst();
-  const financial = await tenantPrisma.financialPeriod.findFirst();
-  const branch = await tenantPrisma.branch.findFirst({ where: { isHeadOffice: true } });
-  const settings = await tenantPrisma.companySettings.findFirst();
-
-  // Check if "Additional Info" (Settings) is "done"
-  // We can check if specific fields in settingsJson are present
-  const sJson = (settings?.settingsJson as any) || {};
-  const additionalDone = !!(sJson.additionalInfo?.legalName); // Minimal check
+  // 🟢 PHASE 4 — Hardened State Retrieval
+  const state = await getOnboardingState(tenantPrisma);
 
   return {
-    general: true, // Always true if they are logged in? Or check CompanyProfile completeness?
-    additional: additionalDone,
-    legal: !!compliance,
-    accounting: !!financial,
-    branch: !!branch,
+    general: state.generalInfoComplete,
+    additional: state.generalInfoComplete, // Additional is part of General in this model
+    legal: state.legalComplete,
+    accounting: state.accountingComplete,
+    branch: state.branchComplete,
     completed: masterCompany.onboardingStatus === 'completed'
   };
 }
@@ -548,16 +560,33 @@ export async function completeOnboarding(companyId: string) {
   if (!masterCompany) throw new Error("No active company found in Master DB");
   if (!process.env.POSTGRES_BASE_URL) throw new Error("POSTGRES_BASE_URL is not defined");
 
-  if (masterCompany.onboardingStatus === "completed") {
-    return {
-      alreadyCompleted: true,
-    };
-  }
-
   const dbUrl = `${process.env.POSTGRES_BASE_URL}/${masterCompany.dbName}`;
   const tenantPrisma = getTenantPrisma(dbUrl);
 
-  // 1. Mark user first-login as false (tenant DB)
+  // 🟢 PHASE 4 — Harden /complete
+  // 1. ALWAYS validate Tenant State first.
+  // Master DB status is NOT the authority for correctness.
+  const state = await getOnboardingState(tenantPrisma);
+
+  if (
+    !state.generalInfoComplete ||
+    !state.legalComplete ||
+    !state.accountingComplete ||
+    !state.branchComplete
+  ) {
+    throw new Error("Setup incomplete or inconsistent."); 
+  }
+
+  // 2. Safe Replay Check
+  // Only AFTER validation passes do we check if we already marked it done.
+  if (masterCompany.onboardingStatus === "completed") {
+    return {
+      alreadyCompleted: true,
+      message: "Onboarding is already completed."
+    };
+  }
+
+  // 3. Mark user first-login as false (tenant DB)
   // NOTE: This assumes there is an ID we can target, or we update many?
   // Previous code didn't specify WHERE on User, it just did:
   // await prismaSuperUser.company.update(...) <-- Wait, previous code was WRONG?

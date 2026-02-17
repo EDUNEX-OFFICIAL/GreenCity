@@ -8,6 +8,7 @@ export interface CompanyProfileUpdate {
     addressLine1?: string;
     addressLine2?: string;
     city: string;
+    district: string;
     state: string;
     country: string;
     postalCode: string;
@@ -33,6 +34,7 @@ export interface OnboardingData {
         addressLine1?: string;
         addressLine2?: string;
         city: string;
+        district: string;
         state: string;
         country: string;
         postalCode: string;

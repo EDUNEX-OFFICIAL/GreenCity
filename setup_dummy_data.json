@@ -1,75 +1,84 @@
 {
-  "generalInfo": {
-    "companyName": "GreenCity Innovations Pvt. Ltd.",
-    "email": "corp@greencity.com",
-    "mobile": "+91 9876543210",
-    "addressLine1": "123, Eco Park Road",
-    "addressLine2": "Sector 5, Salt Lake",
-    "city": "Kolkata",
-    "state": "West Bengal",
-    "country": "India",
-    "postalCode": "700091",
-    "adminFullName": "Ikhlaq Ahmad",
-    "adminEmail": "ikhlaq@greencity.com",
-    "adminMobile": "+91 9000000000",
-    "adminUsername": "ikhlaq_admin"
+  "step1_company_creation": {
+    "companyInfo": {
+      "companyName": "GreenCity Solutions Pvt Ltd",
+      "email": "admin@greencity.com",
+      "mobileNumber": "9876543210",
+      "country": "India",
+      "state": "Telangana",
+      "district": "Hyderabad",
+      "city": "Hyderabad",
+      "postalCode": "500081",
+      "addressLine1": "Plot No 42, Hitech City, Madhapur",
+      "addressLine2": "Cyber Towers, Phase 2"
+    },
+    "rootAdmin": {
+      "fullName": "Soham Sharma",
+      "email": "soham@greencity.com",
+      "mobileNumber": "9876543210",
+      "username": "soham_admin",
+      "password": "Password@123"
+    },
+    "subscription": {
+      "plan": "enterprise",
+      "conversionId": "CONV-2024-X99",
+      "betaMode": true
+    }
   },
-  "additionalInfo": {
-    "legalName": "GreenCity Innovations Private Limited",
+  "step2_general_info": {
+    "description": "Verify the pre-filled data from Step 1. Ensure the address and contact details are correct. Check if Hyderabad is selected."
+  },
+  "step3_additional_info": {
+    "legalName": "GreenCity Solutions Private Limited",
     "displayName": "GreenCity",
     "websiteUrl": "https://greencity.com",
     "companyType": "Private Limited",
-    "incorporationDate": "2024-01-15",
+    "incorporationDate": "2020-01-01",
     "supportEmail": "support@greencity.com",
-    "supportPhone": "+91 8001234567",
-    "description": "GreenCity is a leading provider of sustainable urban farming solutions and organic waste management systems."
+    "supportPhone": "040-23111234",
+    "description": "Leading provider of sustainable waste management and urban planning solutions in Telangana."
   },
-  "legalInfo": {
+  "step4_legal_info": {
+    "comments": "Data must match regex patterns. GSTIN must start with State Code (Telangana = 36).",
     "pan": "ABCDE1234F",
-    "gstin": "19ABCDE1234F1Z5",
+    "gstin": "36ABCDE1234F1Z5",
     "gstRegistrationType": "regular",
-    "gstStateCode": "19",
-    "cin": "U12345WB2024PTC123456",
-    "tan": "CALG01234G",
-    "msme": "UDYAM-WB-01-1234567",
-    "lut": "LUT/2024/001",
+    "gstStateCode": "36",
+    "cin": "U72900TG2020PTC123456",
+    "tan": "HYDB12345A",
+    "msme": "UDYAM-TG-01-0012345",
+    "lut": "LUT123456789",
     "sezUnit": false
   },
-  "accountingConfig": {
+  "step5_accounting_configuration": {
     "baseCurrency": "INR - Indian Rupee",
     "financialYearStart": "2024-04-01",
     "financialYearEnd": "2025-03-31",
     "accountingMethod": "Accrual",
     "decimalPrecision": "2",
     "invoiceStartNumber": "1",
-    "invoicePrefix": "GC/2024/",
+    "invoicePrefix": "INV-HYD-",
     "openingBalanceDate": "2024-04-01",
-    "openingBalance": "500000",
-    "creditNotePrefix": "CN/2024/",
-    "debitNotePrefix": "DN/2024/",
+    "openingBalance": "100000",
+    "creditNotePrefix": "CN-",
+    "debitNotePrefix": "DN-",
     "timezone": "(UTC+05:30) IST - India Standard Time",
     "roundOff": true
   },
-  "branchInfo": {
-    "branchName": "Head Office",
-    "branchCode": "HO-KOL",
-    "branchEmail": "ho@greencity.com",
-    "branchMobile": "9830098300",
-    "addressLine1": "Suite 404, Green Tower",
-    "addressLine2": "Eco Hub",
+  "step6_branch_info": {
+    "branchName": "Hyderabad Head Office",
+    "branchCode": "HO-HYD",
+    "type": "Head Office",
+    "email": "hyd.ho@greencity.com",
+    "phone": "040-23111234",
+    "addressLine1": "Plot No 42, Hitech City, Madhapur",
+    "addressLine2": "Cyber Towers, Phase 2",
     "country": "India",
-    "state": "West Bengal",
-    "district": "North 24 Parganas",
-    "city": "Kolkata",
-    "zipCode": "700091",
-    "pincode": "700091",
-    "branchHead": "Ikhlaq Ahmad",
-    "contactNumber": "9830098300",
-    "workingDays": "Mon-Sat",
-    "workingHours": "09:30 - 19:00",
-    "stockAllowed": true,
-    "negativeStockAllowed": false,
-    "transactionLockDate": false,
-    "approvalFlow": true
+    "state": "Telangana",
+    "district": "Hyderabad",
+    "city": "Hyderabad",
+    "pincode": "500081",
+    "gstin": "36ABCDE1234F1Z5",
+    "isPrimary": true
   }
 }

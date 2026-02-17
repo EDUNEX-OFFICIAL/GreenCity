@@ -20,6 +20,7 @@ export interface CreateCompanyInput {
     country: string
     state: string
     district: string
+    city: string
     postalCode: string
   }
   rootAdmin: {
